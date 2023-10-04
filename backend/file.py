@@ -23,15 +23,13 @@ class Crash(db.Model):
 def index():
     return render_template('index.html')
 
-# cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 @app.route('/api/data', methods=['GET'])
 def get_data():
     sql_query = text("SELECT Country FROM road_accident_clean")
     result = db.session.execute(sql_query)
     data = [{'Country': row.Country} for row in result]
     return jsonify(data)
-
-from flask import request
 
 @app.route('/api/add_data', methods=['POST'])
 def add_data():
