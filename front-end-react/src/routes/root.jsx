@@ -8,7 +8,6 @@ export default function Root() {
         <>
             <NavigationBar />
             <main className="container pt-3">
-                <DataForm />
                 <Outlet />
             </main>
         </>
