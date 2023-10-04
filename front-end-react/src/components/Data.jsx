@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export default function DataForm() {
   const [formData, setFormData] = useState({
@@ -8,7 +10,6 @@ export default function DataForm() {
     code: '',
     year: '',
     deaths: '',
-    sidedness: '',
   });
 
   const handleChange = (e) => {
@@ -35,7 +36,6 @@ export default function DataForm() {
           code: '',
           year: '',
           deaths: '',
-          sidedness: '',
         });
       })
       .catch((error) => {
@@ -48,61 +48,52 @@ export default function DataForm() {
     <div>
       <h1>Ajouter des données en base de données</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Catégorie:</label>
-          <input
+        <Form.Group className="mt-3">
+          <Form.Label>Catégorie:</Form.Label>
+          <Form.Control
             type="text"
             name="category"
             value={formData.category}
             onChange={handleChange}
           />
-        </div>
-        <div>
-          <label>Pays:</label>
-          <input
+        </Form.Group>
+        <Form.Group className="mt-3">
+          <Form.Label>Pays:</Form.Label>
+          <Form.Control
             type="text"
             name="country"
             value={formData.country}
             onChange={handleChange}
           />
-        </div>
-        <div>
-          <label>Code:</label>
-          <input
+        </Form.Group>
+        <Form.Group className="mt-3">
+          <Form.Label>Code:</Form.Label>
+          <Form.Control
             type="text"
             name="code"
             value={formData.code}
             onChange={handleChange}
           />
-        </div>
-        <div>
-          <label>Année:</label>
-          <input
+        </Form.Group>
+        <Form.Group className="mt-3">
+          <Form.Label>Année:</Form.Label>
+          <Form.Control
             type="text"
             name="year"
             value={formData.year}
             onChange={handleChange}
           />
-        </div>
-        <div>
-          <label>Décès:</label>
-          <input
+        </Form.Group>
+        <Form.Group className="mt-3">
+          <Form.Label>Décès:</Form.Label>
+          <Form.Control
             type="text"
             name="deaths"
             value={formData.deaths}
             onChange={handleChange}
           />
-        </div>
-        <div>
-          <label>Côté:</label>
-          <input
-            type="text"
-            name="sidedness"
-            value={formData.sidedness}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Ajouter</button>
+        </Form.Group>
+        <Button variant="primary" type="submit" className="mt-3">Ajouter</Button>
       </form>
     </div>
   );

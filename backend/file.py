@@ -11,13 +11,11 @@ db = SQLAlchemy(app)
 class Crash(db.Model):
     __tablename__ = 'road_accident_clean'
     id = db.Column(db.Integer, primary_key=True)
-    Index = db.Column(db.Integer)
     Category = db.Column(db.String(45))
     Country = db.Column(db.String(45))
     Code = db.Column(db.String(45))
     Year = db.Column(db.String(45))
     Deaths = db.Column(db.String(45))
-    Sidedness = db.Column(db.String(45))
 
 @app.route('/')
 def index():
@@ -43,7 +41,6 @@ def add_data():
         Code=data['code'],
         Year=data['year'],
         Deaths=data['deaths'],
-        Sidedness=data['sidedness']
     )
 
     db.session.add(new_data)
