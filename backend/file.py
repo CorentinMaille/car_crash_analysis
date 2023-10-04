@@ -3,6 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from flask_cors import CORS
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+import pandas as pd
 import plotly.express as px
 
 
@@ -51,7 +56,7 @@ def add_data():
     db.session.commit()
 
     return jsonify({'message': 'Données ajoutées avec succès'})
-    
+
 
 @app.route('/api/countries', methods=['GET'])
 def get_countries():
@@ -62,9 +67,50 @@ def get_countries():
     fig = px.line(df, x='Year', y='Deaths', color='Country')
 
     return fig.to_html()
-    
+
 
 
 
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
+
+@app.route('/api/camembert', methods=['POST'])
+def get_data():
+    sql_query = text("SELECT Country FROM road_accident_clean WHERE Category='Continent'")
+    result = db.session.execute(sql_query)
+
+    df = pd.DataFrame(result, columns={["Country", "Category", "Code", "Year", "Deaths"]})
+    df = df.groupby(["Country", "Year"]).sum("Deaths").reset_index()
+    df = df.loc[(df["Year"] == 2019)]
+
+    cmap = plt.cm.cool
+    colors = cmap(np.linspace(0., 1., len(list(df['Country']))))
+
+    explode = (0.05, 0.05, 0.05, 0.05, 0.05)
+
+    fig, ax = plt.subplots(figsize =(15, 10))
+    wedges, texts, autotexts = ax.pie(df['Deaths'],
+                                    autopct='%1.1f%%',
+                                    explode = explode,
+                                    shadow = True,
+                                    colors = colors,
+                                    startangle = 90,
+                                    wedgeprops = { 'linewidth' : 1, 'edgecolor' : "red" },
+                                    textprops = dict(color ="black"))
+
+    ax.legend(wedges, df['Country'],
+            title ="Continent",
+            loc ="center left",
+            bbox_to_anchor =(1, 0, 0.5, 1))
+
+    plt.setp(autotexts, size = 10, weight ="bold")
+    ax.set_title("Nombres de morts sur la route par continent",loc='left')
+
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+
+    data_uri = base64.b64encode(buffer.read()).decode('utf-8')
+
+    return jsonify({'chart_data_uri': data_uri})
+
