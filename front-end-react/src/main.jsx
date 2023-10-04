@@ -10,7 +10,6 @@ import CrashByCountryGraphicView from "./components/views/CrashByCountryGraphicV
 import CrashByContinentGraphicView from "./components/views/CrashByContinentGraphicView.jsx";
 import Home from "./components/views/Home.jsx";
 import DataForm from "./components/Data.jsx";
-import CrashByWorldPart from "./components/views/CrashByWorldPart.jsx";
 
 const router = createBrowserRouter([
     {
