@@ -6,11 +6,27 @@ import {
 } from "react-router-dom";
 import "./index.css";
 import Root from "./routes/root.jsx";
+import CrashByCountryGraphicView from "./components/views/CrashByCountryGraphicView.jsx";
+import Home from "./components/views/Home.jsx";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Root />,
+        children: [
+            {
+                element: <Root />,
+                children: [
+                    {
+                        element: <Home/>,
+                        path: "/"
+                    },
+                    {
+                        element: <CrashByCountryGraphicView/>,
+                        path: "/graphic/1"
+                    }
+                ]
+            }
+        ],
     },
 ]);
 
