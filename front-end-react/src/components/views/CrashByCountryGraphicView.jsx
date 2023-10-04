@@ -1,36 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Card from 'react-bootstrap/Card';
 
 export default function CrashByCountryGraphicView() {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        // Fonction qui va chercher les données depuis l'API
-        const fetchData = async () => {
-          try {
-            const response = await axios.get('http://localhost:8080/api/countries');
-            setData(response.data);
-          } catch (error) {
-            console.error('Erreur lors de la récupération des données:', error);
-          }
-        };
-    
-        fetchData();
+        axios.get("http://localhost:8080/api/countries")
+            .then((res) => {
+                setData(res.data);
+                
+                document.getElementById( 'data' ).addEventListener('load', e => {
+                    let iFrame = e.currentTarget
+                    iFrame.width  = iFrame.contentWindow.document.body.scrollWidth;
+                    iFrame.height = iFrame.contentWindow.document.body.scrollHeight + 50;
+                })
+            })
+            .catch((error) => {
+                console.log(error)
+            });
       }, []); 
-    
-    
     
     return (
         <>
             <h1 className="text-center">Crash by countries</h1>
-            <div className="w-75 border rounded mx-auto mt-3" style={{height: "75vh"}}>
+            <Card className="p-3 overflow-auto" >
                 {data != null ? (
-                    <iframe srcDoc={data} style={{ width: '100%', height: '500px', border: 'none' }}/>
+                    <iframe srcDoc={data} id="data"/>
 
                 ) : (
-                    <h1>Chargement</h1>
+                    <h2>Chargement...</h2>
                 )}
-            </div>
+            </Card>
         </>
     )
 }
