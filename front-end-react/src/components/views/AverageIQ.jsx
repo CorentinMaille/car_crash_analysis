@@ -12,7 +12,6 @@ export default function AverageIQ() {
                 
                 document.getElementById( 'data' ).addEventListener('load', e => {
                     let iFrame = e.currentTarget
-                    iFrame.width  = iFrame.contentWindow.document.body.scrollWidth;
                     iFrame.height = iFrame.contentWindow.document.body.scrollHeight + 50;
                 })
             })

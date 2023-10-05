@@ -92,6 +92,7 @@ def get_iq():
     data = [{'Country': row.Country, 'Average': row.Average} for row in result]
     df = pd.DataFrame(data)
     fig = px.bar(df, y='Average', x='Country')
+    fig.update_layout(yaxis_range=[85,110])
     fig.update_xaxes(tickangle=45)
     fig.update_traces(marker=dict(opacity=1), selector=dict(type='bar'), width=.5)
     return fig.to_html()
