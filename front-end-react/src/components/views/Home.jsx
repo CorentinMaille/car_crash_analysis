@@ -7,7 +7,7 @@ export default function Home() {
             <h2>Sources des datasets</h2>
             <ListGroup>
                 <ListGroup.Item>Morts sur la route : <a href="https://www.kaggle.com/datasets/malikhamzanawaz/world-wide-road-accidents" target="_blank">https://www.kaggle.com/datasets/malikhamzanawaz/world-wide-road-accidents</a></ListGroup.Item>
-                <ListGroup.Item>Santé mondiale : <a href="https://www.kaggle.com/datasets/kamaumunyori/global-health-data-analysis-1990-2019/" target="_blank">https://www.kaggle.com/datasets/kamaumunyori/global-health-data-analysis-1990-2019</a></ListGroup.Item>
+                <ListGroup.Item>Population mondiale : <a href="https://www.kaggle.com/datasets/akshatsharma0610/world-population-2000-2023" target="_blank">https://www.kaggle.com/datasets/akshatsharma0610/world-population-2000-2023</a></ListGroup.Item>
             </ListGroup>
         </>
     )

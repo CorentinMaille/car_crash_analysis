@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
+import Nav from 'react-bootstrap/Nav';
 
 export default function CrashByCountryGraphicView() {
     const [data, setData] = useState(null);
+    const [key, setKey] = useState('world_population');
+    const [subData, setSubData] = useState(null);
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/countries")
@@ -12,15 +15,34 @@ export default function CrashByCountryGraphicView() {
                 
                 document.getElementById( 'data' ).addEventListener('load', e => {
                     let iFrame = e.currentTarget
-                    iFrame.width  = iFrame.contentWindow.document.body.scrollWidth;
                     iFrame.height = iFrame.contentWindow.document.body.scrollHeight + 50;
                 })
             })
             .catch((error) => {
                 console.log(error)
             });
+
       }, []); 
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/api/" + key)
+            .then((res) => {
+                setSubData(res.data);
+                
+                document.getElementById( 'subData' ).addEventListener('load', e => {
+                    let iFrame = e.currentTarget
+                    iFrame.height = iFrame.contentWindow.document.body.scrollHeight + 50;
+                })
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+      }, [key]); 
     
+    const HandleClick = e => {
+        setKey(e.currentTarget.dataset.key)
+    }
+      
     return (
         <>
             <h1 className="text-center">Analyse par pays</h1>
@@ -32,6 +54,25 @@ export default function CrashByCountryGraphicView() {
                 ) : (
                     <h3>Chargement...</h3>
                 )}
+                <Nav variant="tabs" defaultActiveKey="world_population">
+                    <Nav.Item>
+                        <Nav.Link onClick={HandleClick} eventKey="world_population" data-key="world_population">Population</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link onClick={HandleClick} eventKey="world_area" data-key="world_area">Territoire (en km2)</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link onClick={HandleClick} eventKey="world_density" data-key="world_density">Densité (en habitant/km2)</Nav.Link>
+                    </Nav.Item>
+                </Nav>
+                <Card className='border-top-0 rounded-top-0'>
+                    {subData != null ? (
+                        <iframe srcDoc={subData} id="subData"/>
+
+                    ) : (
+                        <h3>Chargement...</h3>
+                    )}
+                </Card>
             </Card>
         </>
     )
