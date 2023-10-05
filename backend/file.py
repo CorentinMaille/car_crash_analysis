@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 from flask_cors import CORS
 
+
 app = Flask(__name__)
 CORS(app)
 
@@ -38,6 +39,8 @@ def add_data():
     db.session.commit()
 
     return jsonify({'message': 'Données ajoutées avec succès'})
+    
+
 
 @app.route('/api/countries', methods=['GET'])
 def get_countries():
@@ -48,6 +51,39 @@ def get_countries():
     fig = px.line(df, x='Year', y='Deaths', color='Country')
 
     return fig.to_html()
+    
+
+
+@app.route('/api/world_population', methods=['GET'])
+def get_population():
+    sql_query = text("SELECT Country, `2010` AS Population FROM world_population_clean ORDER BY Population DESC LIMIT 10")
+    result = db.session.execute(sql_query)
+    data = [{'Country': row.Country, 'Population': row.Population} for row in result]
+    df = pd.DataFrame(data)
+    fig = px.bar(df, x='Country', y='Population')
+
+    return fig.to_html()
+
+@app.route('/api/world_area', methods=['GET'])
+def get_area():
+    sql_query = text("SELECT Country, `Area (km²)` AS Area FROM world_population_clean ORDER BY Area DESC LIMIT 10")
+    result = db.session.execute(sql_query)
+    data = [{'Country': row.Country, 'Area': row.Area} for row in result]
+    df = pd.DataFrame(data)
+    fig = px.bar(df, x='Country', y='Area')
+
+    return fig.to_html()
+
+@app.route('/api/world_density', methods=['GET'])
+def get_density():
+    sql_query = text("SELECT Country, `2010` / `Area (km²)` AS Density FROM world_population_clean ORDER BY Density DESC LIMIT 10;")
+    result = db.session.execute(sql_query)
+    data = [{'Country': row.Country, 'Density': row.Density} for row in result]
+    df = pd.DataFrame(data)
+    fig = px.bar(df, x='Country', y='Density')
+
+    return fig.to_html()
+    
 
 @app.route('/api/iq', methods=['GET'])
 def get_iq():
