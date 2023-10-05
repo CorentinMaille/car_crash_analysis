@@ -21,13 +21,6 @@ class Crash(db.Model):
     Deaths = db.Column(db.String(45))
 
 cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
-@app.route('/api/data', methods=['GET'])
-def get_data():
-    sql_query = text("SELECT Country FROM road_accident_clean")
-    result = db.session.execute(sql_query)
-    data = [{'Country': row.Country} for row in result]
-    return jsonify(data)
-
 
 @app.route('/api/add_data', methods=['POST'])
 def add_data():
@@ -55,6 +48,17 @@ def get_countries():
     df = pd.DataFrame(data)
     fig = px.line(df, x='Year', y='Deaths', color='Country')
 
+    return fig.to_html()
+
+@app.route('/api/iq', methods=['GET'])
+def get_iq():
+    sql_query = text("SELECT * FROM average_iq")
+    result = db.session.execute(sql_query)
+    data = [{'Country': row.Country, 'Average': row.Average} for row in result]
+    df = pd.DataFrame(data)
+    fig = px.bar(df, y='Average', x='Country')
+    fig.update_xaxes(tickangle=45)
+    fig.update_traces(marker=dict(opacity=1), selector=dict(type='bar'), width=.5)
     return fig.to_html()
     
 

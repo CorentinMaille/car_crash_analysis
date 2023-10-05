@@ -11,6 +11,7 @@ export default function NavigationBar() {
                         <Nav className="me-auto">
                             <Nav.Link href="/graphic/1">By Countries</Nav.Link>
                             <Nav.Link href="/graphic/2">By World Part</Nav.Link>
+                            <Nav.Link href="/graphic/3">Average IQ</Nav.Link>
                             <Nav.Link href="/insert">Ajouter une donnée</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
