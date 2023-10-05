@@ -9,8 +9,8 @@ export default function NavigationBar() {
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="/graphic/1">By Countries</Nav.Link>
-                            <Nav.Link href="/graphic/2">By World Part</Nav.Link>
+                            <Nav.Link href="/graphic/1">Par Pays</Nav.Link>
+                            <Nav.Link href="/graphic/2">Par Continent</Nav.Link>
                             <Nav.Link href="/insert">Ajouter une donnée</Nav.Link>
                             <Nav.Link href="/update">Modifier une donnée</Nav.Link>
                         </Nav>

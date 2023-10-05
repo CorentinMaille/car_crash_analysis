@@ -24,7 +24,7 @@ function CrashByContinentGraphicView() {
 
     return (
         <>
-            <h1 className="text-center">Crash by continent</h1>
+            <h1 className="text-center">Analyse par continent</h1>
             <div className="w-75 border rounded mx-auto mt-3" style={{height: "75vh"}}>
                 {data != null ? (
                     <iframe srcDoc={data} style={{width: '100%', height: '500px', border: 'none'}}/>
