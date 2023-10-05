@@ -77,7 +77,26 @@ def update_data(data_id):
 
     return jsonify({'message': 'Données mises à jour avec succès'}), 200
 
+@app.route('/api/get_years', methods=['GET'])
+def get_years():
+    sql_query = text("SELECT DISTINCT Year FROM road_accident_clean;")
+    result = db.session.execute(sql_query)
+    data = [row.Year for row in result]
 
+    return data
+    
+@app.route('/api/countries_by_year', methods=['GET'])
+def get_countries_by_year():
+    year = request.args.get('year')
+
+    if not year or not year.isdigit():
+        return jsonify({'message': 'Année invalide'}), 400
+
+    sql_query = text("SELECT * FROM road_accident_clean WHERE Year = :year")
+    result = db.session.execute(sql_query, {'year': year})
+
+    data = [{'id': row.id,'Country': row.Country} for row in result]
+    return jsonify(data), 200
 
 @app.route('/api/countries', methods=['GET'])
 def get_countries():

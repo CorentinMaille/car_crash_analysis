@@ -12,8 +12,33 @@ export default function UpdateDataForm() {
     year: '',
     deaths: '',
   });
-  const [id, setId] = useState(null)
+  const [years, setYears] = useState(null)
+  const [year, setYear] = useState(null)
+  const [ids, setIds] = useState(null)
+  const [id, setId] = useState("null")
 
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/api/get_years")
+        .then((res) => {
+          setYears(res.data)
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+
+  }, []); 
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/api/countries_by_year?year=" + year)
+        .then((res) => {
+          setIds(res.data)
+        })
+        .catch((error) => {
+            console.log(error)
+        });
+
+  }, [year]); 
 
   useEffect(() => {
     axios.get("http://localhost:8080/api/get_data/" + id)
@@ -35,6 +60,10 @@ export default function UpdateDataForm() {
   
   const HandleIdChange = (e) => {
     setId(e.currentTarget.value)
+  };
+
+  const HandleYearChange = (e) => {
+    setYear(e.currentTarget.value)
   };
 
   const handleChange = (e) => {
@@ -62,6 +91,7 @@ export default function UpdateDataForm() {
           year: '',
           deaths: '',
         });
+        setId("null")
       })
       .catch((error) => {
         console.error('Erreur lors de l\'ajout des données :', error);
@@ -73,12 +103,28 @@ export default function UpdateDataForm() {
     <div>
       <h1>Modifier des données en base de données</h1>
       <Form.Label>Sélectionner l'élément à modifier:</Form.Label>
-      <Form.Select aria-label="Id" onChange={HandleIdChange}>
-        <option value="null">Sélectionner un id</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
+      <Form.Select aria-label="Years" onChange={HandleYearChange} value={year}>
+        <option value="null">Sélectionner une année</option>
+        { years != null ? (
+          <>
+          {years.map(el => {
+            return <option value={el}>{el}</option>
+          })}
+          </>
+        ) : (<><option value="test">test</option></>)}
       </Form.Select>
+      {year != null ? (
+        <Form.Select aria-label="Id" onChange={HandleIdChange} value={id} className='mt-3'>
+          <option value="null">Sélectionner un pays</option>
+          {ids != null ? (
+            <>
+            {ids.map(el => {
+              return <option value={el.id}>{el.Country}</option>
+            })}
+            </>
+          ) : <></>}
+        </Form.Select>
+      ): <></>}
       <Card className='mt-3 p-3'>
         <form onSubmit={handleSubmit}>
           <Form.Group>
