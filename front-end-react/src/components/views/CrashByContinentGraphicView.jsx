@@ -1,26 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import Button from "react-bootstrap/Button";
+import {FormControl, FormLabel, InputGroup} from "react-bootstrap";
 
 function CrashByContinentGraphicView() {
     const [data, setData] = useState(null);
-
-    let year = ""
-
-    document.getElementById("year").onclick(() => {
-        year = document.getElementById("year");
-    })
-
-    document.getElementById("submit").onclick(() => {
-        useEffect(() => {
-            axios.get('http://127.0.0.1:8080/api/camembert?year=' + year)
-                .then(response => {
-                    setData(response.data);
-                })
-                .catch(error => {
-                    console.error(error.message);
-                });
-        }, []);
-    })
+    const [year, setYear] = useState(2019);
 
     useEffect(() => {
         axios.get('http://127.0.0.1:8080/api/camembert?year=' + year)
@@ -30,7 +15,12 @@ function CrashByContinentGraphicView() {
             .catch(error => {
                 console.error(error.message);
             });
-    }, []);
+    }, [year]);
+
+    function updateGraphic() {
+        const yearValue = document.getElementById('year').value;
+        setYear(yearValue);
+    }
 
     return (
         <>
@@ -42,8 +32,14 @@ function CrashByContinentGraphicView() {
                     <h1>Chargement</h1>
                 )}
 
-                <input id="year" type="number"/>
-                <button id="submit">Submit</button>
+                <InputGroup>
+                    <FormLabel>Choisir une année</FormLabel>
+                    <FormControl id="year" type="number" min={1990} max={2019} />
+                </InputGroup>
+
+                <Button id="submit" onClick={updateGraphic}>
+                     Valider
+                </Button>
             </div>
         </>
     );
