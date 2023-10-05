@@ -56,13 +56,19 @@ export default function CrashByCountryGraphicView() {
                 )}
                 <Nav variant="tabs" defaultActiveKey="world_population">
                     <Nav.Item>
-                        <Nav.Link onClick={HandleClick} eventKey="world_population" data-key="world_population">Population</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
                         <Nav.Link onClick={HandleClick} eventKey="world_area" data-key="world_area">Territoire (en km2)</Nav.Link>
                     </Nav.Item>
                     <Nav.Item>
+                        <Nav.Link onClick={HandleClick} eventKey="world_population" data-key="world_population">Population</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
                         <Nav.Link onClick={HandleClick} eventKey="world_density" data-key="world_density">Densité (en habitant/km2)</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link onClick={HandleClick} eventKey="world_percent" data-key="world_percent">Proportion de la population global morte sur la route (en %)</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link onClick={HandleClick} eventKey="iq" data-key="iq">Q.I. moyen</Nav.Link>
                     </Nav.Item>
                 </Nav>
                 <Card className='border-top-0 rounded-top-0'>
