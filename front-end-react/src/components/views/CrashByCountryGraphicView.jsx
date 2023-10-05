@@ -23,13 +23,14 @@ export default function CrashByCountryGraphicView() {
     
     return (
         <>
-            <h1 className="text-center">Crash by countries</h1>
+            <h1 className="text-center">Analyse par pays</h1>
             <Card className="p-3 overflow-auto" >
+                <h2>Morts sur la route par pays</h2>
                 {data != null ? (
                     <iframe srcDoc={data} id="data"/>
 
                 ) : (
-                    <h2>Chargement...</h2>
+                    <h3>Chargement...</h3>
                 )}
             </Card>
         </>
