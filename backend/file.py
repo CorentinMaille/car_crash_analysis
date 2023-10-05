@@ -85,6 +85,17 @@ def get_density():
     return fig.to_html()
     
 
+@app.route('/api/world_percent', methods=['GET'])
+def get_percent():
+    sql_query = text("SELECT Country, Deaths * 100 / `2010` AS Percent, Year, Category FROM road_accident_clean INNER JOIN world_population_clean USING (Country) WHERE Year = 2010 AND Category = 'Country' ORDER BY `Percent` DESC LIMIT 20;")
+    result = db.session.execute(sql_query)
+    data = [{'Country': row.Country, 'Percent': row.Percent} for row in result]
+    df = pd.DataFrame(data)
+    fig = px.bar(df, x='Country', y='Percent')
+
+    return fig.to_html()
+    
+
 @app.route('/api/iq', methods=['GET'])
 def get_iq():
     sql_query = text("SELECT * FROM average_iq")
