@@ -2,8 +2,6 @@ from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 import plotly.express as px
 from flask_cors import CORS
 
@@ -14,6 +12,7 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/car_crash'
 db = SQLAlchemy(app)
 
+
 class Crash(db.Model):
     __tablename__ = 'road_accident_clean'
     id = db.Column(db.Integer, primary_key=True)
@@ -22,6 +21,7 @@ class Crash(db.Model):
     Code = db.Column(db.String(45))
     Year = db.Column(db.String(45))
     Deaths = db.Column(db.String(45))
+
 
 @app.route('/api/add_data', methods=['POST'])
 def add_data():
@@ -79,6 +79,7 @@ def update_data(data_id):
 
 
 
+
 @app.route('/api/countries', methods=['GET'])
 def get_countries():
     sql_query = text("SELECT * FROM road_accident_clean WHERE Category = 'Country'")
@@ -133,6 +134,7 @@ def get_percent():
     return fig.to_html()
     
 
+
 @app.route('/api/iq', methods=['GET'])
 def get_iq():
     sql_query = text("SELECT * FROM average_iq")
@@ -144,6 +146,7 @@ def get_iq():
     fig.update_xaxes(tickangle=45)
     fig.update_traces(marker=dict(opacity=1), selector=dict(type='bar'), width=.5)
     return fig.to_html()
+
 
 @app.route('/api/camembert', methods=['GET'])
 def get_camembert_mort():
@@ -160,31 +163,9 @@ def get_camembert_mort():
     df = df.groupby(["Country", "Year"]).sum("Deaths").reset_index()
     df = df.loc[(df["Year"] == year)]
 
-    cmap = plt.cm.cool
-    colors = cmap(np.linspace(0., 1., len(list(df['Country']))))
-
-    explode = (0.05, 0.05, 0.05, 0.05, 0.05)
-
-    fig, ax = plt.subplots(figsize =(15, 10))
-    wedges, texts, autotexts = ax.pie(df['Deaths'],
-                                    autopct='%1.1f%%',
-                                    explode = explode,
-                                    shadow = True,
-                                    colors = colors,
-                                    startangle = 90,
-                                    wedgeprops = { 'linewidth' : 1, 'edgecolor' : "red" },
-                                    textprops = dict(color ="black"))
-
-    ax.legend(wedges, df['Country'],
-            title ="Continent",
-            loc ="center left",
-            bbox_to_anchor =(1, 0, 0.5, 1))
-
-    plt.setp(autotexts, size = 10, weight ="bold")
-    ax.set_title("Nombres de morts sur la route par continent",loc='left')
-
     fig = px.pie(df, values='Deaths', names='Country', title='Population of European continent')
     return fig.to_html()
+
 
 # METHODS
 def yearIsCorrect(year):
