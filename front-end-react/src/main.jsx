@@ -10,6 +10,7 @@ import CrashByCountryGraphicView from "./components/views/CrashByCountryGraphicV
 import CrashByContinentGraphicView from "./components/views/CrashByContinentGraphicView.jsx";
 import Home from "./components/views/Home.jsx";
 import DataForm from "./components/Data.jsx";
+import UpdateDataForm from "./components/UpdateData.jsx";
 
 const router = createBrowserRouter([
     {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
                     {
                         element: <DataForm/>,
                         path: "/insert"
+                    },
+                    {
+                        element: <UpdateDataForm/>,
+                        path: "/update"
                     }
                 ]
             }

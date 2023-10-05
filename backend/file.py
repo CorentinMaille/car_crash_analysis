@@ -39,7 +39,44 @@ def add_data():
     db.session.commit()
 
     return jsonify({'message': 'Données ajoutées avec succès'})
-    
+
+@app.route('/api/get_data/<int:data_id>', methods=['GET'])
+def get_data(data_id):
+    data = Crash.query.get(data_id)
+
+    if data is None:
+        return jsonify({'message': 'Données non trouvées'}), 404
+
+    data_dict = {
+        'id': data.id,
+        'category': data.Category,
+        'country': data.Country,
+        'code': data.Code,
+        'year': data.Year,
+        'deaths': data.Deaths
+    }
+
+    return jsonify(data_dict), 200
+
+@app.route('/api/update_data/<int:data_id>', methods=['PUT'])
+def update_data(data_id):
+    data = request.json
+
+    existing_data = Crash.query.get(data_id)
+
+    if existing_data is None:
+        return jsonify({'message': 'Données non trouvées'}), 404
+
+    existing_data.Category = data.get('category', existing_data.Category)
+    existing_data.Country = data.get('country', existing_data.Country)
+    existing_data.Code = data.get('code', existing_data.Code)
+    existing_data.Year = data.get('year', existing_data.Year)
+    existing_data.Deaths = data.get('deaths', existing_data.Deaths)
+
+    db.session.commit()
+
+    return jsonify({'message': 'Données mises à jour avec succès'}), 200
+
 
 
 @app.route('/api/countries', methods=['GET'])
