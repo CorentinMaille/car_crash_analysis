@@ -5,8 +5,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.express as px
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/car_crash'
 db = SQLAlchemy(app)
@@ -19,8 +21,6 @@ class Crash(db.Model):
     Code = db.Column(db.String(45))
     Year = db.Column(db.String(45))
     Deaths = db.Column(db.String(45))
-
-cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
 @app.route('/api/add_data', methods=['POST'])
 def add_data():
