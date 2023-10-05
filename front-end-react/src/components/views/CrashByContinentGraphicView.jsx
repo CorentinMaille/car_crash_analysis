@@ -1,36 +1,27 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import Button from "react-bootstrap/Button";
+import {FormControl, FormGroup, FormLabel} from "react-bootstrap";
 
 function CrashByContinentGraphicView() {
     const [data, setData] = useState(null);
-
-    let year = ""
-
-    document.getElementById("year").onclick(() => {
-        year = document.getElementById("year");
-    })
-
-    document.getElementById("submit").onclick(() => {
-        useEffect(() => {
-            axios.get('http://127.0.0.1:8080/api/camembert?year=' + year)
-                .then(response => {
-                    setData(response.data);
-                })
-                .catch(error => {
-                    console.error(error.message);
-                });
-        }, []);
-    })
+    const [year, setYear] = useState(null);
 
     useEffect(() => {
         axios.get('http://127.0.0.1:8080/api/camembert?year=' + year)
             .then(response => {
                 setData(response.data);
+                console.log(response.data)
             })
             .catch(error => {
                 console.error(error.message);
             });
-    }, []);
+    }, [year]);
+
+    const updateGraphic = () => {
+        const yearValue = document.getElementById('year-input').value;
+        setYear(yearValue)
+    }
 
     return (
         <>
@@ -42,8 +33,15 @@ function CrashByContinentGraphicView() {
                     <h1>Chargement</h1>
                 )}
 
-                <input id="year" type="number"/>
-                <button id="submit">Submit</button>
+                <div id="iframe-container"></div>
+
+                <FormGroup>
+                    <FormLabel>Sélectionnez une année</FormLabel>
+                    <FormControl type="number" id="year-input" defaultValue="2019" min={1990} max={2019} width={50}></FormControl>
+                </FormGroup>
+                <Button id="submit-btn" onClick={updateGraphic}>
+                    Valider
+                </Button>
             </div>
         </>
     );

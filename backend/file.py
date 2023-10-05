@@ -11,6 +11,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/car_crash'
 db = SQLAlchemy(app)
 
+
 class Crash(db.Model):
     __tablename__ = 'road_accident_clean'
     id = db.Column(db.Integer, primary_key=True)
@@ -19,6 +20,7 @@ class Crash(db.Model):
     Code = db.Column(db.String(45))
     Year = db.Column(db.String(45))
     Deaths = db.Column(db.String(45))
+
 
 # ROUTES
 @app.route('/')
@@ -84,26 +86,27 @@ def get_camembert_mort():
 
     explode = (0.05, 0.05, 0.05, 0.05, 0.05)
 
-    fig, ax = plt.subplots(figsize =(15, 10))
+    fig, ax = plt.subplots(figsize=(15, 10))
     wedges, texts, autotexts = ax.pie(df['Deaths'],
-                                    autopct='%1.1f%%',
-                                    explode = explode,
-                                    shadow = True,
-                                    colors = colors,
-                                    startangle = 90,
-                                    wedgeprops = { 'linewidth' : 1, 'edgecolor' : "red" },
-                                    textprops = dict(color ="black"))
+                                      autopct='%1.1f%%',
+                                      explode=explode,
+                                      shadow=True,
+                                      colors=colors,
+                                      startangle=90,
+                                      wedgeprops={'linewidth': 1, 'edgecolor': "red"},
+                                      textprops=dict(color="black"))
 
     ax.legend(wedges, df['Country'],
-            title ="Continent",
-            loc ="center left",
-            bbox_to_anchor =(1, 0, 0.5, 1))
+              title="Continent",
+              loc="center left",
+              bbox_to_anchor=(1, 0, 0.5, 1))
 
-    plt.setp(autotexts, size = 10, weight ="bold")
-    ax.set_title("Nombres de morts sur la route par continent",loc='left')
+    plt.setp(autotexts, size=10, weight="bold")
+    ax.set_title("Nombres de morts sur la route par continent", loc='left')
 
     fig = px.pie(df, values='Deaths', names='Country', title='Population of European continent')
     return fig.to_html()
+
 
 # METHODS
 def yearIsCorrect(year):
