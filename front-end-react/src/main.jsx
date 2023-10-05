@@ -10,7 +10,6 @@ import CrashByCountryGraphicView from "./components/views/CrashByCountryGraphicV
 import CrashByContinentGraphicView from "./components/views/CrashByContinentGraphicView.jsx";
 import Home from "./components/views/Home.jsx";
 import DataForm from "./components/Data.jsx";
-import AverageIQ from "./components/views/AverageIQ";
 
 const router = createBrowserRouter([
     {
@@ -30,10 +29,6 @@ const router = createBrowserRouter([
                     {
                         element: <CrashByContinentGraphicView/>,
                         path: "/graphic/2"
-                    },
-                    {
-                        element: <AverageIQ/>,
-                        path: "/graphic/3"
                     },
                     {
                         element: <DataForm/>,
