@@ -5,7 +5,7 @@ export default function MyComponent() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/data')
+    axios.get('http://127.0.0.1:8080/api/data')
       .then((response) => {
         setData(response.data);
         console.log(response.data);
